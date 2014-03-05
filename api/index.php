@@ -4,8 +4,10 @@ require 'Slim/Slim.php';
 
 $app = new Slim();
 $app->get('/users', 'getUsers');
+$app->get('/artists', 'getArtists');
 $app->get('/users/:id', 'getUser');
 $app->post('/add_user', 'addUser');
+$app->post('/add_artist', 'addArtist');
 $app->put('/users/:id', 'updateUser');
 $app->delete('/users/:id', 'deleteUser');
 
@@ -14,6 +16,19 @@ $app->run();
 
 function getUsers() {
 	$sql = "select * FROM users ORDER BY id";
+	try {
+		$db = getConnection();
+		$stmt = $db->query($sql);  
+		$wines = $stmt->fetchAll(PDO::FETCH_OBJ);
+		$db = null;
+		echo json_encode($wines);
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
+
+function getArtists() {
+	$sql = "select * FROM artists ORDER BY id";
 	try {
 		$db = getConnection();
 		$stmt = $db->query($sql);  
@@ -53,6 +68,23 @@ function addUser() {
 		$user->id = $db->lastInsertId();
 		$db = null;
 		echo json_encode($user); 
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
+
+function addArtist() {
+	$request = Slim::getInstance()->request();
+	$artist = json_decode($request->getBody());
+	$sql = "INSERT INTO artist (name) VALUES (:name)";
+	try {
+		$db = getConnection();
+		$stmt = $db->prepare($sql);  
+		$stmt->bindParam("name", $artist->name);
+		$stmt->execute();
+		$artist->id = $db->lastInsertId();
+		$db = null;
+		echo json_encode($artist); 
 	} catch(PDOException $e) {
 		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
 	}
