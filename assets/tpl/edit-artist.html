@@ -1,0 +1,15 @@
+<h2>Modifier un artiste</h2>
+<div class="row">
+  <div class="col-md-6">
+  <form novalidate ng-repeat="artist in artists" name="AddNewArtistForm" id="add-new-form" method="post" action="">
+    <input type="hidden" ng-model="artist.id" value="{{artist.id}}" />
+    <div class="form-group">
+      <label for="name">Nom</label>
+      <input class="form-control" type="text" ng-model="artist.name" value="{{artist.name}}" required />
+    </div>
+    <button class="btn btn-primary" ng-disabled="AddNewArtistForm.$invalid || isUnchanged(artist)" id="add-new-btn" ng-click="updateArtist(artist)">Mettre à jour <span class="glyphicon glyphicon-floppy-disk"></span></button>
+    <button class="btn btn-danger" ng-click="deleteArtist(artist)">Supprimer <span class="glyphicon glyphicon-trash"></span></button>
+    <a href="#/artists" class="btn">Annuler</a>
+  </form>
+</div>
+</div>

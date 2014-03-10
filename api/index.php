@@ -1,19 +1,53 @@
 <?php
-
+/* ------------------------------------------------------*/
+//Déclaration de l'application avec le framework slim
+/* ------------------------------------------------------*/
 require 'Slim/Slim.php';
-
 $app = new Slim();
+
+
+/* ------------------------------------------------------*/
+// Déclaration du routing
+/* ------------------------------------------------------*/
+//Création des routes utilisateurs
 $app->get('/users', 'getUsers');
-$app->get('/artists', 'getArtists');
 $app->get('/users/:id', 'getUser');
 $app->post('/add_user', 'addUser');
-$app->post('/add_artist', 'addArtist');
 $app->put('/users/:id', 'updateUser');
 $app->delete('/users/:id', 'deleteUser');
 
+//Création des routes artistes
+$app->get('/artists', 'getArtists');
+$app->get('/artists/:id', 'getArtist');
+$app->post('/add_artist', 'addArtist');
+$app->put('/artists/:id', 'updateArtist');
+$app->delete('/artists/:id', 'deleteArtist');
 
+
+/* ------------------------------------------------------*/
+// Lancement de l'application
+/* ------------------------------------------------------*/
 $app->run();
 
+
+/* ------------------------------------------------------*/
+// Configuration de la base de données 
+/* ------------------------------------------------------*/
+function getConnection() {
+	$dbhost="localhost";
+	$dbuser="root";
+	$dbpass="root";
+	$dbname="slim_bdd";
+	$dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);	
+	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	return $dbh;
+}
+
+/* ------------------------------------------------------*/
+// LES FONCTIONS CRUD pour chaque table
+/* ------------------------------------------------------*/
+
+/* LIST */
 function getUsers() {
 	$sql = "select * FROM users ORDER BY id";
 	try {
@@ -40,6 +74,7 @@ function getArtists() {
 	}
 }
 
+/* READ */
 function getUser($id) {
 	$sql = "select * FROM users WHERE id=".$id." ORDER BY id";
 	try {
@@ -53,6 +88,20 @@ function getUser($id) {
 	}
 }
 
+function getArtist($id) {
+	$sql = "select * FROM artists WHERE id=".$id." ORDER BY id";
+	try {
+		$db = getConnection();
+		$stmt = $db->query($sql);  
+		$wines = $stmt->fetchAll(PDO::FETCH_OBJ);
+		$db = null;
+		echo json_encode($wines);
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
+
+/* CREATE */
 function addUser() {
 	$request = Slim::getInstance()->request();
 	$user = json_decode($request->getBody());
@@ -76,7 +125,7 @@ function addUser() {
 function addArtist() {
 	$request = Slim::getInstance()->request();
 	$artist = json_decode($request->getBody());
-	$sql = "INSERT INTO artist (name) VALUES (:name)";
+	$sql = "INSERT INTO artists (name) VALUES (:name)";
 	try {
 		$db = getConnection();
 		$stmt = $db->prepare($sql);  
@@ -90,6 +139,7 @@ function addArtist() {
 	}
 }
 
+/* UPDATE */
 function updateUser($id) {
 	$request = Slim::getInstance()->request();
 	$user = json_decode($request->getBody());
@@ -110,6 +160,24 @@ function updateUser($id) {
 	}
 }
 
+function updateArtist($id) {
+	$request = Slim::getInstance()->request();
+	$artist = json_decode($request->getBody());
+	$sql = "UPDATE artists SET name=:name WHERE id=:id";
+	try {
+		$db = getConnection();
+		$stmt = $db->prepare($sql);  
+		$stmt->bindParam("name", $artist->name);
+		$stmt->bindParam("id", $id);
+		$stmt->execute();
+		$db = null;
+		echo json_encode($artist); 
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
+
+/* DELETE */
 function deleteUser($id) {
 	$sql = "DELETE FROM users WHERE id=".$id;
 	try {
@@ -123,14 +191,17 @@ function deleteUser($id) {
 	}
 }
 
-function getConnection() {
-	$dbhost="localhost";
-	$dbuser="root";
-	$dbpass="root";
-	$dbname="slim_bdd";
-	$dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);	
-	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	return $dbh;
+function deleteArtist($id) {
+	$sql = "DELETE FROM artists WHERE id=".$id;
+	try {
+		$db = getConnection();
+		$stmt = $db->query($sql);  
+		$wines = $stmt->fetchAll(PDO::FETCH_OBJ);
+		$db = null;
+		echo json_encode($wines);
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
 }
 
 ?>
