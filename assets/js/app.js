@@ -2,6 +2,8 @@
 angular.module('CrudApp', []).
   config(['$routeProvider', function($routeProvider) {
   $routeProvider.
+      //accueil
+      when('/', {templateUrl: 'assets/tpl/home.html'}).      
       //utilisateurs
       when('/users', {templateUrl: 'assets/tpl/lists-users.html', controller: ListCtrl}).      
       when('/add-user', {templateUrl: 'assets/tpl/add-new-user.html', controller: AddCtrl}).      
