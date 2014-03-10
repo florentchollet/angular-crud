@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `last_name` varchar(100) NOT NULL,
   `email` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 CREATE TABLE IF NOT EXISTS `artists` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -18,10 +18,9 @@ CREATE TABLE IF NOT EXISTS `artists` (
 --
 
 INSERT INTO `users` (`id`, `username`, `first_name`, `last_name`, `email`) VALUES
-(1, 'lucentx', 'Aron', 'Barbosa', 'Manila, Philippines'),
-(2, 'ozzy', 'Ozzy', 'Osbourne', 'England'),
-(3, 'tony', 'Tony', 'Iommi', 'England');
+(1, 'ozzy', 'Ozzy', 'Osbourne', 'ozzy.osbourne@free.fr'),
+(2, 'tony', 'Tony', 'Iommi', 'tonyiommi@free.fr');
 
 
 INSERT INTO `artists` (`id`, `name`) VALUES
-(1, 'Eric Clapton');
+(1, 'Black Sabbath');

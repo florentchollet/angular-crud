@@ -3,11 +3,11 @@ angular.module('CrudApp', []).
   config(['$routeProvider', function($routeProvider) {
   $routeProvider.
       //utilisateurs
-      when('/users', {templateUrl: 'assets/tpl/lists.html', controller: ListCtrl}).      
-      when('/add-user', {templateUrl: 'assets/tpl/add-new.html', controller: AddCtrl}).      
-      when('/edit/:id', {templateUrl: 'assets/tpl/edit.html', controller: EditCtrl}).
+      when('/users', {templateUrl: 'assets/tpl/lists-users.html', controller: ListCtrl}).      
+      when('/add-user', {templateUrl: 'assets/tpl/add-new-user.html', controller: AddCtrl}).      
+      when('/edit/:id', {templateUrl: 'assets/tpl/edit-user.html', controller: EditCtrl}).
       //artists
-      when('/artists', {templateUrl: 'assets/tpl/lists_artists.html', controller: ListArtistsCtrl}).
+      when('/artists', {templateUrl: 'assets/tpl/lists-artists.html', controller: ListArtistsCtrl}).
       when('/add-artist', {templateUrl: 'assets/tpl/add-new-artist.html', controller: AddArtistCtrl}).
       when('/edit-artist/:id', {templateUrl: 'assets/tpl/edit-artist.html', controller: EditArtistCtrl}).
       otherwise({redirectTo: '/'});

@@ -3,12 +3,17 @@
   <thead>
     <tr>
       <th>Nom</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr ng-repeat="artist in artists">
       <td>{{artist.name}}</td>
-      <td><a href="#/edit-artist/{{artist.id}}" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-pencil"></i></td>
+      <td>
+        <a href="#/edit-artist/{{artist.id}}" class="btn btn-default btn-sm">
+          <i class="glyphicon glyphicon-pencil"></i>
+        </a>
+      </td>
     </tr>
   </tbody>
 </table>

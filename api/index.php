@@ -105,14 +105,14 @@ function getArtist($id) {
 function addUser() {
 	$request = Slim::getInstance()->request();
 	$user = json_decode($request->getBody());
-	$sql = "INSERT INTO users (username, first_name, last_name, address) VALUES (:username, :first_name, :last_name, :address)";
+	$sql = "INSERT INTO users (username, first_name, last_name, email) VALUES (:username, :first_name, :last_name, :email)";
 	try {
 		$db = getConnection();
 		$stmt = $db->prepare($sql);  
 		$stmt->bindParam("username", $user->username);
 		$stmt->bindParam("first_name", $user->first_name);
 		$stmt->bindParam("last_name", $user->last_name);
-		$stmt->bindParam("address", $user->address);
+		$stmt->bindParam("email", $user->email);
 		$stmt->execute();
 		$user->id = $db->lastInsertId();
 		$db = null;
@@ -143,14 +143,14 @@ function addArtist() {
 function updateUser($id) {
 	$request = Slim::getInstance()->request();
 	$user = json_decode($request->getBody());
-	$sql = "UPDATE users SET username=:username, first_name=:first_name, last_name=:last_name, address=:address WHERE id=:id";
+	$sql = "UPDATE users SET username=:username, first_name=:first_name, last_name=:last_name, email=:email WHERE id=:id";
 	try {
 		$db = getConnection();
 		$stmt = $db->prepare($sql);  
 		$stmt->bindParam("username", $user->username);
 		$stmt->bindParam("first_name", $user->first_name);
 		$stmt->bindParam("last_name", $user->last_name);
-		$stmt->bindParam("address", $user->address);
+		$stmt->bindParam("email", $user->email);
 		$stmt->bindParam("id", $id);
 		$stmt->execute();
 		$db = null;
